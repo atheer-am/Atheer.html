@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProVocab - Professional Vocabulary & Tech Terms</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Color Palette Variables */
+    :root {
+      --burgundy: #800020;
+      --burgundy-dark: #500014;
+      --brown: #5C3A21;
+      --brown-dark: #3D2314;
+      --cream: #FAF6F0;
+      --white: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', 'Tajawal', sans-serif;
+      background-color: var(--cream);
+      color: #2A1810;
+      padding: 20px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
+
+    /* Layout Containers */
+    .view-section {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Landing Card Container */
+    .landing-box {
+      background-color: var(--white);
+      border: 3px solid var(--burgundy);
+      border-radius: 20px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    /* Title & Typography */
+    .app-title {
+      color: var(--burgundy);
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .app-subtitle {
+      color: var(--brown);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    /* Image Gallery Grid */
+    .image-gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: repeat(2, 90px);
+      gap: 10px;
+      margin-bottom: 25px;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-img:hover {
+      transform: scale(1.03);
+    }
+
+    .img-large {
+      grid-row: span 2;
+    }
+
+    /* Description Boxes */
+    .description-box {
+      background-color: var(--cream);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: left;
+      border-left: 4px solid var(--burgundy);
+    }
+
+    .description-box h3 {
+      color: var(--burgundy);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .description-box p {
+      color: var(--brown-dark);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .description-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Feature Highlights Pills */
+    .features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .feature-pill {
+      background-color: rgba(128, 0, 32, 0.08);
+      color: var(--burgundy);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(128, 0, 32, 0.15);
+    }
+
+    /* Buttons */
+    .start-btn {
+      background-color: var(--burgundy);
+      color: var(--white);
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(128, 0, 32, 0.2);
+    }
+
+    .start-btn:hover {
+      background-color: var(--brown);
+      transform: translateY(-2px);
+    }
+
+    /* Navigation Tabs */
+    .category-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background-color: transparent;
+      color: var(--brown);
+      border: 2px solid var(--brown);
+      padding: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: 'Poppins', 'Tajawal', sans-serif;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background-color: var(--burgundy);
+      color: var(--white);
+      border-color: var(--burgundy);
+    }
+
+    /* Flashcard View Styles */
+    .card {
+      background-color: var(--white);
+      border: 3px solid var(--burgundy);
+      border-radius: 18px;
+      width: 100%;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .word-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .english-word {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--burgundy);
+    }
+
+    .audio-btn {
+      background-color: var(--cream);
+      border: 1px solid var(--brown);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .audio-btn:hover {
+      background-color: var(--burgundy);
+      color: var(--white);
+    }
+
+    .arabic-word {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--brown);
+      margin-bottom: 15px;
+      direction: rtl;
+    }
+
+    .definition {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      color: var(--brown-dark);
+      line-height: 1.5;
+      margin-bottom: 15px;
+      background-color: var(--cream);
+      padding: 12px;
+      border-radius: 8px;
+      direction: rtl;
+    }
+
+    .opposite-box {
+      background-color: var(--burgundy);
+      color: var(--white);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: inline-block;
+    }
+
+    /* Controls Buttons */
+    .buttons-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .nav-btn {
+      background-color: var(--burgundy);
+      color: var(--white);
+      border: none;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--brown);
+    }
+
+    .home-btn {
+      background-color: transparent;
+      color: var(--brown);
+      border: 2px solid var(--brown);
+      padding: 8px 20px;
+      font-weight: 700;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .counter {
+      font-weight: 700;
+      color: var(--brown);
+      margin-top: 10px;
+    }
+
+    /* Footer Credits */
+    .credits {
+      margin-top: 25px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--burgundy);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: HOME / LANDING SECTION -->
+  <div id="landing-view" class="view-section">
+    <div class="landing-box">
+      
+      <!-- App Title Header -->
+      <h1 class="app-title">ProVocab</h1>
+      <div class="app-subtitle">Professional Vocabulary & Tech Terms</div>
+
+      <!-- Multi-Image Gallery Showcase -->
+      <div class="image-gallery">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80" alt="Software Development" class="gallery-img img-large">
+        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=400&q=80" alt="Vocabulary & Books" class="gallery-img">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=400&q=80" alt="Interactive Learning" class="gallery-img">
+      </div>
+      
+      <!-- Detailed Description Box (English) -->
+      <div class="description-box">
+        <h3>About the Platform</h3>
+        <p>
+          <strong>ProVocab</strong> is an interactive educational web app engineered to bridge the gap between computer science jargon and C1/C2 advanced English vocabulary.
+        </p>
+        <p>
+          Designed specifically for computer science students and developers, this platform utilizes bite-sized flashcards to deliver clear Arabic meanings, contextual definitions, direct antonyms, and instant native text-to-speech audio pronunciation.
+        </p>
+      </div>
+
+      <!-- Feature Badges -->
+      <div class="features-list">
+        <span class="feature-pill">💻 Programming Terms</span>
+        <span class="feature-pill">📚 Advanced English</span>
+        <span class="feature-pill">🔊 Audio Pronunciation</span>
+        <span class="feature-pill">🔄 Antonyms & Opposites</span>
+      </div>
+
+      <!-- Call to Action -->
+      <button class="start-btn" onclick="openCardsPage()">Start Learning</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: CARDS SECTION (SINGLE-CARD VIEW) -->
+  <div id="cards-view" class="view-section hidden">
+    
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      <button class="tab-btn active" id="tab-dev" onclick="switchCategory('dev')">Programming Terms</button>
+      <button class="tab-btn" id="tab-general" onclick="switchCategory('general')">Advanced Terms</button>
+    </div>
+
+    <!-- Single Flashcard Container -->
+    <div class="card">
+      <div class="word-header">
+        <span class="english-word" id="english">Variable</span>
+        <button class="audio-btn" onclick="speakWord()" title="Listen">🔊</button>
+      </div>
+      <div class="arabic-word" id="arabic">متغير</div>
+      <div class="definition" id="definition">مساحة في الذاكرة لتخزين قيمة قابلة للتغيير.</div>
+      <div class="opposite-box" id="opposite">Antonym: Constant (ثابت)</div>
+    </div>
+
+    <!-- Controls -->
+    <div class="buttons-row">
+      <button class="nav-btn" onclick="prevCard()">Previous</button>
+      <button class="nav-btn" onclick="nextCard()">Next</button>
+    </div>
+
+    <button class="home-btn" onclick="openHomePage()">Back to Home</button>
+    <div class="counter" id="counter">1 / 5</div>
+  </div>
+
+  <!-- Credits Footer -->
+  <div class="credits">Created by Atheer, Raghad, Juri, Lian, Fajr</div>
+
+  <script>
+    // Data: Programming Cards
+    const devCards = [
+      {
+        english: "Variable",
+        arabic: "متغير",
+        definition: "مساحة في الذاكرة تُخصص لتخزين قيمة قابلة للتغيير أثناء تنفيذ البرنامج.",
+        opposite: "Antonym: Constant (ثابت)"
+      },
+      {
+        english: "Frontend",
+        arabic: "واجهة الأمام",
+        definition: "كل ما يراه المستخدم ويتفاعل معه في الصفحة أو التطبيق.",
+        opposite: "Antonym: Backend (الخلفية)"
+      },
+      {
+        english: "Synchronous",
+        arabic: "متزامن",
+        definition: "تنفيذ العمليات والتعليمات خطوة بخطوة بالتتابع.",
+        opposite: "Antonym: Asynchronous (غير متزامن)"
+      },
+      {
+        english: "Mutable",
+        arabic: "قابل للتعديل",
+        definition: "البيانات التي يمكن تغيير قيمتها بعد إنشائها دون إعادة إنشائها.",
+        opposite: "Antonym: Immutable (غير قابل للتعديل)"
+      },
+      {
+        english: "Encrypt",
+        arabic: "تشفير",
+        definition: "تحويل النص الصريح إلى رمز لحمايته من الوصول غير المصرح.",
+        opposite: "Antonym: Decrypt (فك التشفير)"
+      }
+    ];
+
+    // Data: Advanced General Cards
+    const generalCards = [
+      {
+        english: "Meticulous",
+        arabic: "شديد الدقة / حريص",
+        definition: "إظهار اهتمام كبير ودقيق جداً بأصغر التفاصيل.",
+        opposite: "Antonym: Careless (مهمل)"
+      },
+      {
+        english: "Resilient",
+        arabic: "مرن / صامد",
+        definition: "القدرة على التعافي بسرعة من الصعوبات أو التغييرات المفاجئة.",
+        opposite: "Antonym: Fragile (هش)"
+      },
+      {
+        english: "Ambiguous",
+        arabic: "غامض",
+        definition: "شيء غير واضح وله أكثر من تفسير ممكن.",
+        opposite: "Antonym: Clear (واضح)"
+      },
+      {
+        english: "Pragmatic",
+        arabic: "عملي / واقعي",
+        definition: "التعامل مع الأمور بطريقة واقعية وعملية بدلاً من النظرية.",
+        opposite: "Antonym: Idealistic (مثالي)"
+      },
+      {
+        english: "Ephemeral",
+        arabic: "زائل / مؤقت",
+        definition: "يدوم لفترة قصيرة جداً ومؤقتة.",
+        opposite: "Antonym: Permanent (دائم)"
+      }
+    ];
+
+    // State Variables
+    let currentCards = devCards;
+    let currentIndex = 0;
+
+    // View Switching Functions
+    function openCardsPage() {
+      document.getElementById('landing-view').classList.add('hidden');
+      document.getElementById('cards-view').classList.remove('hidden');
+      showCard();
+    }
+
+    function openHomePage() {
+      document.getElementById('cards-view').classList.add('hidden');
+      document.getElementById('landing-view').classList.remove('hidden');
+    }
+
+    // Render Card Content
+    function showCard() {
+      const item = currentCards[currentIndex];
+      document.getElementById("english").textContent = item.english;
+      document.getElementById("arabic").textContent = item.arabic;
+      document.getElementById("definition").textContent = item.definition;
+      document.getElementById("opposite").textContent = item.opposite;
+      document.getElementById("counter").textContent = (currentIndex + 1) + " / " + currentCards.length;
+    }
+
+    // Category Switching
+    function switchCategory(category) {
+      currentIndex = 0;
+      document.getElementById("tab-dev").classList.toggle("active", category === 'dev');
+      document.getElementById("tab-general").classList.toggle("active", category === 'general');
+      
+      currentCards = (category === 'dev') ? devCards : generalCards;
+      showCard();
+    }
+
+    // Navigation Controls
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % currentCards.length;
+      showCard();
+    }
+
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
+      showCard();
+    }
+
+    // Text-to-Speech Functionality
+    function speakWord() {
+      const word = currentCards[currentIndex].english;
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Audio playback is not supported in this browser.");
+      }
+    }
+  </script>
+
+</body>
